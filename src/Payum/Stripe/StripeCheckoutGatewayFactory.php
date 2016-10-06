@@ -23,11 +23,11 @@ class StripeCheckoutGatewayFactory extends GatewayFactory
      */
     protected function populateConfig(ArrayObject $config)
     {
-        if (false == class_exists(Stripe::class)) {
+        if (false == class_exists('Stripe')) {
             throw new LogicException('You must install "stripe/stripe-php:~2.0|~3.0" library.');
         }
 
-        $config->defaults([
+        $config->defaults(array(
             'payum.factory_name' => 'stripe_checkout',
             'payum.factory_title' => 'Stripe Checkout',
 
@@ -46,15 +46,15 @@ class StripeCheckoutGatewayFactory extends GatewayFactory
             'payum.action.create_token' => new CreateTokenAction(),
 
             'payum.extension.create_customer' => new CreateCustomerExtension(),
-        ]);
+        ));
 
         if (false == $config['payum.api']) {
-            $config['payum.default_options'] = [
+            $config['payum.default_options'] = array(
                 'publishable_key' => '',
                 'secret_key' => ''
-            ];
+            );
             $config->defaults($config['payum.default_options']);
-            $config['payum.required_options'] = ['publishable_key', 'secret_key'];
+            $config['payum.required_options'] = array('publishable_key', 'secret_key');
 
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
@@ -63,8 +63,8 @@ class StripeCheckoutGatewayFactory extends GatewayFactory
             };
         }
 
-        $config['payum.paths'] = array_replace([
+        $config['payum.paths'] = array_replace(array(
             'PayumStripe' => __DIR__.'/Resources/views',
-        ], $config['payum.paths'] ?: []);
+        ), $config['payum.paths'] ?: array());
     }
 }
